@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\MascotaController;
+use App\Http\Controllers\NoticiaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +22,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('mascotas', MascotaController::class)->middleware('auth');
+Route::resource('noticias', NoticiaController::class)->middleware('auth');

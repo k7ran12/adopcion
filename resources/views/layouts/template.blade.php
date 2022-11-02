@@ -28,8 +28,8 @@
             <a href="#contact">Adoptar</a>
         </nav>
         <div class="icons">
-            <a href="#"><i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesion</a>
-            <a href="#">Registrarse </a>
+            <a href="{{ route('login') }}"><i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesion</a>
+            <a href="{{ route('register') }}">Registrarse </a>
         </div>
     </header>
     @yield('content')

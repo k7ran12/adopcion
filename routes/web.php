@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\MascotaController;
 use App\Http\Controllers\NoticiaController;
+use App\Mascota;
+use App\Noticia;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,11 +18,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('inicio');
+    $noticias = Noticia::all();
+    return view('inicio', compact('noticias'));
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('adoptar', function () {
+    $mascotas = Mascota::all();
+    return view('adoptar', compact('mascotas'));
+})->name('adoptar');
 Route::resource('mascotas', MascotaController::class)->middleware('auth');
 Route::resource('noticias', NoticiaController::class)->middleware('auth');

@@ -14,7 +14,7 @@
         <div class="form-group">
             <div class="mb-3">
                 <label for="contenido" class="form-label">Contenido</label>
-                <textarea placeholder="Escriba el contenido de la noticia" class="form-control" id="contenido" name="contenido" rows="3"></textarea>
+                <textarea placeholder="Escriba el contenido de la noticia" class="form-control" id="contenido" name="contenido" rows="3">{{ $noticia->contenido }}</textarea>
             </div>
         </div>
         <div class="mb-3">

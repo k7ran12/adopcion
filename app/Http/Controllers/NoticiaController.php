@@ -97,7 +97,16 @@ class NoticiaController extends Controller
     {
         request()->validate(Noticia::$rules);
 
-        $noticia->update($request->all());
+        $path = $request->file('imagen')->store(
+            'noticias', 'public'
+        );
+
+        $noticia->update([
+            "titulo" => $request->titulo,
+            "subtitulo" => $request->subtitulo,
+            "contenido" => $request->contenido,
+            "imagen" => $path
+        ]);
 
         return redirect()->route('noticias.index')
             ->with('success', 'Noticia updated successfully');

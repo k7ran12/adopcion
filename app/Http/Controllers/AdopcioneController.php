@@ -47,8 +47,8 @@ class AdopcioneController extends Controller
 
         $adopcione = Adopcione::create($request->all());
 
-        return redirect()->route('adopciones.index')
-            ->with('success', 'Adopcione created successfully.');
+        return response('Agregado correctamente', 200)
+                  ->header('Content-Type', 'text/plain');
     }
 
     /**

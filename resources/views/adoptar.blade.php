@@ -59,24 +59,72 @@
     </div>
 </section>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalForm">
-    Launch demo modal
-</button>
-
 <!-- Modal -->
 <div class="modal fade" id="modalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Enviar solicitud</h5>
             </div>
             <div class="modal-body">
-                ...
+                @guest
+                <h5>Debe registrarse o iniciar sesion para poder enviar un solicitud de adopción</h5>
+                <div class="row mx-auto">
+                    <a style="background-color: #CE7C2A !important;border-color: #CE7C2A;"
+                        href="{{ route('register') }}" class="btn btn-primary my-2">Registrar</a>
+                    <a style="background-color: #CE7C2A !important;border-color: #CE7C2A;" href="{{ route('login') }}"
+                        class="btn btn-primary my-2">Iniciar sesion</a>
+                </div>
+                @else
+                <div class="row">
+                    <div class="col-md-8 offset-2">
+                        <div class="row min-form">
+                            <div id="resultmm">
+                                <span class="seccess">Rellene el siguiente formulario para enviar una solicitud de
+                                    adopción.</span>
+                            </div>
+                            <form id="formulario_adopcion" class="row" action="{{ route('adopciones.store') }}"
+                                method="post">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" name="nombre" required="" placeholder="Nombre">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" name="rut" required="" placeholder="RUT">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" name="domicilio" required="" placeholder="Domicilio">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="email" name="correo" required="" placeholder="Correo">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="number" name="telefono" required="" placeholder="Telefono">
+                                    </div>
+                                </div>
+                                <input type="hidden" id="mascota_id" name="mascota_id">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button onclick="enviarSolicitud()" style="width: 100% !important"
+                                            class="btn-sub" type="button">Enviar Solicitud</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endguest
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cerrar</button>
             </div>
         </div>
     </div>
@@ -85,13 +133,41 @@
 @section('scripts')
 <script>
     var myModal = new bootstrap.Modal(document.getElementById('modalForm'))
+    let mascota_id = document.getElementById('mascota_id');
+    let url = window.location.origin + '/'
     function abrirModal($mascota_id) {
+        mascota_id.value = $mascota_id
         console.log('modal' + $mascota_id);
         myModal.show()
     }
-    function cerrarModal()
-    {
+    function cerrarModal() {
+        mascota_id.value = ''
         myModal.hide();
+    }
+
+    function enviarSolicitud() {
+        const data = new FormData(document.getElementById('formulario_adopcion'));
+        fetch(url + 'adopciones', {
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            method: 'POST',
+            body: data
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    return response.text()
+                } else {
+                    throw "Error en la llamada Ajax";
+                }
+
+            })
+            .then(function (texto) {
+                console.log(texto);
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
     }
 </script>
 @endsection

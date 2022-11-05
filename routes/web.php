@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdopcioneController;
 use App\Http\Controllers\MascotaController;
 use App\Http\Controllers\NoticiaController;
 use App\Mascota;
@@ -31,3 +32,4 @@ Route::get('adoptar', function () {
 })->name('adoptar');
 Route::resource('mascotas', MascotaController::class)->middleware('auth');
 Route::resource('noticias', NoticiaController::class)->middleware('auth');
+Route::resource('adopciones', AdopcioneController::class)->middleware('auth');

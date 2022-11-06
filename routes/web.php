@@ -30,6 +30,9 @@ Route::get('adoptar', function () {
     $mascotas = Mascota::all();
     return view('adoptar', compact('mascotas'));
 })->name('adoptar');
+Route::get('about', function () {
+    return view('about');
+})->name('about');
 Route::resource('mascotas', MascotaController::class)->middleware('auth');
 Route::resource('noticias', NoticiaController::class)->middleware('auth');
 Route::resource('adopciones', AdopcioneController::class)->middleware('auth');

@@ -110,7 +110,7 @@
                                         <input type="number" name="telefono" required="" placeholder="Telefono">
                                     </div>
                                 </div>
-                                <input type="hidden" id="mascota_id" name="mascota_id">
+                                <input type="hidden" id="mascota_id_input" name="mascota_id">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <button onclick="enviarSolicitud()" style="width: 100% !important"
@@ -133,16 +133,17 @@
 @section('scripts')
 <script>
     var myModal = new bootstrap.Modal(document.getElementById('modalForm'))
-    let mascota_id = document.getElementById('mascota_id');
     let url = window.location.origin + '/'
-    function abrirModal($mascota_id) {
-        mascota_id.value = $mascota_id
-        console.log('modal' + $mascota_id);
+    let mascota_input = document.getElementById('mascota_id_input');
+    function abrirModal(mascota_id) {
+        //mascota_id.value = $mascota_id
+        console.log('modal' + mascota_input);
         myModal.show()
+        mascota_input.value = mascota_id
     }
     function cerrarModal() {
-        mascota_id.value = ''
         myModal.hide();
+        mascota_input.value = ''
     }
 
     function enviarSolicitud() {

@@ -35,13 +35,15 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
+
 										<th>Nombre</th>
 										<th>Rut</th>
 										<th>Domicilio</th>
 										<th>Correo</th>
 										<th>Telefono</th>
-										<th>Mascota Id</th>
+										<th>Mascota</th>
+                                        <th>Especie</th>
+                                        <th>Raza</th>
 
                                         <th></th>
                                     </tr>
@@ -50,18 +52,20 @@
                                     @foreach ($adopciones as $adopcione)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
+
 											<td>{{ $adopcione->nombre }}</td>
 											<td>{{ $adopcione->rut }}</td>
 											<td>{{ $adopcione->domicilio }}</td>
 											<td>{{ $adopcione->correo }}</td>
 											<td>{{ $adopcione->telefono }}</td>
-											<td>{{ $adopcione->mascota_id }}</td>
+											<td>{{ $adopcione->mascota->nombre }}</td>
+                                            <td>{{ $adopcione->mascota->especie }}</td>
+                                            <td>{{ $adopcione->mascota->raza }}</td>
 
                                             <td>
                                                 <form action="{{ route('adopciones.destroy',$adopcione->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('adopciones.show',$adopcione->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('adopciones.edit',$adopcione->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                                    <!--<a class="btn btn-sm btn-primary " href="{{ route('adopciones.show',$adopcione->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('adopciones.edit',$adopcione->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>-->
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>

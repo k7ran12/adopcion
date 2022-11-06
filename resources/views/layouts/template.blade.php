@@ -80,8 +80,8 @@
                          <li class="nav-item {{ Route::current()->getName() == '' ? 'active' : '' }}">
                              <a href="/">Inicio</a>
                          </li>
-                         <li class="nav-item">
-                             <a href="about-us.html">About</a>
+                         <li class="nav-item {{ Route::current()->getName() == 'about' ? 'active' : '' }}">
+                             <a href="{{ route('about') }}">About</a>
                          </li>
                          <li class="nav-item {{ Route::current()->getName() == 'adoptar' ? 'active' : '' }}">
                              <a href="{{ route('adoptar') }}">Adopción</a>

@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Adopcione extends Model
 {
-    
+
     static $rules = [
 		'nombre' => 'required',
 		'rut' => 'required',
@@ -48,8 +48,8 @@ class Adopcione extends Model
      */
     public function mascota()
     {
-        return $this->hasOne('App\Mascota', 'id', 'mascota_id');
+        return $this->hasOne(Mascota::class, 'id', 'mascota_id');
     }
-    
+
 
 }

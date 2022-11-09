@@ -44,7 +44,8 @@ class MascotaController extends Controller
     public function store(Request $request)
     {
         $path = $request->file('foto')->store(
-            'animales', 'public'
+            'animales',
+            'public'
         );
 
         request()->validate(Mascota::$rules);
@@ -118,5 +119,33 @@ class MascotaController extends Controller
 
         return redirect()->route('mascotas.index')
             ->with('success', 'Mascota deleted successfully');
+    }
+
+    public function filtro(Request $request)
+    {
+        if ($request->especie == 'Especie') {
+            $request->especie = '';
+        }
+        if ($request->sexo == 'Sexo') {
+            $request->sexo = '';
+        }
+        if ($request->tamanio == 'Tamaño') {
+            $request->tamanio = '';
+        }
+
+        $filtro = Mascota::where('especie', 'like', '%' . $request->especie . '%')
+            ->where('sexo', 'like', '%' . $request->sexo . '%')
+            ->where('tamanio', 'like', '%' . $request->tamanio . '%')
+            ->get();
+
+        return response($filtro, 200)
+            ->header('Content-Type', 'text/plain');
+    }
+
+    public function getAnimales()
+    {
+        $mascotas = Mascota::all();
+        return response(json_encode($mascotas), 200)
+            ->header('Content-Type', 'application/json');
     }
 }

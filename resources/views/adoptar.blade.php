@@ -4,39 +4,34 @@
     <div class="container">
         <div class="our-services">
             <div class="row mb-3">
-                <div class="col-md-3">
-                    <select class="styled">
-                        <option>Styled select box</option>
-                        <option>Male</option>
-                        <option>Female</option>
+                <div class="col-md-4">
+                    <select onchange="busquedaSelect()" name="especie_select" id="especie_select" class="styled">
+                        <option>Especie</option>
+                        <option value="perro">Perro</option>
+                        <option value="gato">Gato</option>
+                        <option value="animal_granja">Animal de granja</option>
                     </select>
                 </div>
-                <div class="col-md-3">
-                    <select class="styled">
-                        <option>Styled select box</option>
-                        <option>Male</option>
-                        <option>Female</option>
+                <div class="col-md-4">
+                    <select onchange="busquedaSelect()" name="sexo_select" id="sexo_select" class="styled">
+                        <option>Sexo</option>
+                        <option value="macho">Macho</option>
+                        <option value="hembra">Hembra</option>
                     </select>
                 </div>
-                <div class="col-md-3">
-                    <select class="styled">
-                        <option>Styled select box</option>
-                        <option>Male</option>
-                        <option>Female</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="styled">
-                        <option>Styled select box</option>
-                        <option>Male</option>
-                        <option>Female</option>
+                <div class="col-md-4">
+                    <select onchange="busquedaSelect()" name="tamanio_select" id="tamanio_select" class="styled">
+                        <option>Tamaño</option>
+                        <option value="pequeño">Pequeño</option>
+                        <option value="mediano">Mediano</option>
+                        <option value="grande">Grande</option>
                     </select>
                 </div>
             </div>
             <h2>DogMilo Pet Care Story<br>For Your Best Friends.</h2>
         </div>
-        <div class="row">
-            @foreach($mascotas as $mascota)
+        <div class="row" id="cargar_animales">
+            <!--@foreach($mascotas as $mascota)
             <div class="col-md-4">
                 <div class="pets-grooming">
                     <div class="styling-pet">
@@ -54,7 +49,7 @@
 
                 </div>
             </div>
-            @endforeach
+            @endforeach-->
         </div>
     </div>
 </section>
@@ -135,6 +130,7 @@
     var myModal = new bootstrap.Modal(document.getElementById('modalForm'))
     let url = window.location.origin + '/'
     let mascota_input = document.getElementById('mascota_id_input');
+    let div_cargar_animales = document.getElementById('cargar_animales')
     function abrirModal(mascota_id) {
         //mascota_id.value = $mascota_id
         console.log('modal' + mascota_input);
@@ -170,5 +166,122 @@
                 console.log(err);
             });
     }
+
+    //Declaras selects
+    let especie = document.getElementById('especie_select');
+    let sexo = document.getElementById('sexo_select');
+    let tamanio = document.getElementById('tamanio_select');
+
+
+    function busquedaSelect() {
+        let formData = new FormData();
+        formData.append('especie', especie.value);
+        formData.append('sexo', sexo.value);
+        formData.append('tamanio', tamanio.value);
+
+        if(especie.value != 'Especie' || sexo.value != 'Sexo' || tamanio.value != 'Tamaño')
+        {
+            console.log('hola');
+            fetch(url + 'filtro-animales', {
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            method: 'POST',
+            body: formData
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    throw "Error en la llamada Ajax";
+                }
+
+            })
+            .then(function (datos) {
+                let data = ''
+                function pasarLista(animal, indice) {
+                    data += `<div class="col-md-4">
+                <div class="pets-grooming">
+                    <div class="styling-pet">
+                        <img style="object-fit: cover;min-width: 150px;min-height: 150px;width: 50%;height: 50%;"
+                            src="{{ @Vite::asset('/storage/app/public/${animal.foto}') }}" alt="">
+                    </div>
+                    <div class="pets-groom">
+                        <h4>${animal.nombre}</h4>
+                        <p>${animal.descripcion}</p>
+                    </div>
+                    <div class="arrow"></div>
+                    <button onclick="abrirModal(${animal.id})">
+                        <img class="arrow-image" src="{{ @Vite::asset('resources/images/uparrow.png') }}" alt="">
+                    </button>
+
+                </div>
+            </div>`;
+                }
+
+                datos.forEach((nombre, indice) => pasarLista(nombre, indice));
+
+                div_cargar_animales.innerHTML = data
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+        }
+        else{
+            getDataAnimales()
+        }
+    }
+
+    //Llamar a la funcion al cargar la pagina
+    getDataAnimales();
+
+    function getDataAnimales() {
+        fetch(url + 'get-animales', {
+            method: 'GET',
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    throw "Error en la llamada Ajax";
+                }
+
+            })
+            .then(function (datos) {
+                let data = ''
+                function pasarLista(animal, indice) {
+                    data += `<div class="col-md-4">
+                <div class="pets-grooming">
+                    <div class="styling-pet">
+                        <img style="object-fit: cover;min-width: 150px;min-height: 150px;width: 50%;height: 50%;"
+                            src="{{ @Vite::asset('/storage/app/public/${animal.foto}') }}" alt="">
+                    </div>
+                    <div class="pets-groom">
+                        <h4>${animal.nombre}</h4>
+                        <p>${animal.descripcion}</p>
+                    </div>
+                    <div class="arrow"></div>
+                    <button onclick="abrirModal(${animal.id})">
+                        <img class="arrow-image" src="{{ @Vite::asset('resources/images/uparrow.png') }}" alt="">
+                    </button>
+
+                </div>
+            </div>`;
+                }
+
+                datos.forEach((nombre, indice) => pasarLista(nombre, indice));
+
+                div_cargar_animales.innerHTML = data
+
+                //console.log(data);
+
+
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+    }
+
+
 </script>
 @endsection

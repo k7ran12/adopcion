@@ -36,3 +36,5 @@ Route::get('about', function () {
 Route::resource('mascotas', MascotaController::class)->middleware('auth');
 Route::resource('noticias', NoticiaController::class)->middleware('auth');
 Route::resource('adopciones', AdopcioneController::class)->middleware('auth');
+Route::post('filtro-animales', 'App\Http\Controllers\MascotaController@filtro')->name('filtro');
+Route::get('get-animales', 'App\Http\Controllers\MascotaController@getAnimales')->name('get.animales');

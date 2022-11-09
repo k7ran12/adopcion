@@ -54,6 +54,7 @@ select {
   select.styled:not([multiple='multiple']){
     height: 30px;
     padding-right: 35px;
+    width: 100%;
     background:
       linear-gradient(45deg, transparent 50%, #AAA 50%),
       linear-gradient(135deg, #AAA 50%, transparent 50%),
